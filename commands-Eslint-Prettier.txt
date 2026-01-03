@@ -1,0 +1,72 @@
+****** ESLINT  ESLINT ESLINT ESLINT ESLINT******
+
+source: https://eslint.org/docs/latest/use/getting-started
+
+Installing & configuring eslint (do this for each new project, ie, in that project's folder)
+>> npm init @eslint/config@latest
+
+>> npx eslint yourfile.js 
+
+Note: npm init @eslint/config assumes you have a package.json file already. If you don’t, make sure to run npm init or yarn init beforehand
+
+https://eslint.org/docs/latest/use/configure/  =>> for list of options that you can change, such as including or excluding certain folders 
+                                                    or files, and details about specific rules.
+_________________________________________________________________________________________________________________________________________________
+
+****** PRETTIER  PRETTIER PRETTIER PRETTIER PRETTIER ******
+https://prettier.io/docs/install.html
+
+1. To install:
+>> npm install --save-dev --save-exact prettier
+
+2. Then, create an empty config file to let editors and other tools know you are using Prettier:
+>> node --eval "fs.writeFileSync('.prettierrc','{}\n')"
+
+3. Next, create a .prettierignore file to let the Prettier CLI and editors know which files to not format. Here’s an example:
+>> node --eval "fs.writeFileSync('.prettierignore','# Ignore artifacts:\nbuild\ncoverage\n')"
+
+    TIPS
+        a. Prettier will follow rules specified in .gitignore if it exists in the same directory from which it is run. 
+        You can also base your .prettierignore on .eslintignore (if you have one).
+        b. If your project isn’t ready to format, say, HTML files yet, add *.html.
+
+4. Now, format all files with Prettier:
+>> npx prettier . --write
+
+NB: 1, 2, 3 & 4 are project specific - so run each time for a new prjct. 
+    5 below is global abnd can be installed from any location with vscode terminal - so run it once
+
+5. SETUP THE EDITOR (if not it work only if u write/format code from command line):
+ Open VS Code and run:
+ >> ext install esbenp.prettier-vscode
+
+
+ 6. To ensure that this extension is used over other extensions you may have installed, be sure to set it as 
+    the default formatter in your VS Code settings. This setting can be set for all languages or by a specific language.
+
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+_________________________________________________________________________________________________________________________________________________
+
+
+****** ESLINT  ESLINT && PRETTIER PRETTIER ******
+https://github.com/prettier/eslint-config-prettier?tab=readme-ov-file
+(PROJECT SPECIFIC)
+To turn off any of the ESLint rules that clash with Prettier. 
+1. nstall eslint-config-prettier 
+>> npm i -D eslint-config-prettier 
+
+2. Add eslint-config-prettier to your ESLint configuration – either to eslintrc or to eslint.config.js (flat config).
+
+eslintrc: Add "prettier" to the "extends" array in your .eslintrc.* file. Make sure to put it last, so it gets the chance to override other configs.
+
+{
+  "extends": [
+    "some-other-config-you-use",
+    "prettier"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "deploy": "git subtree push --prefix dist origin gh-pages",
+    "install-wp": "npm install --save-dev webpack webpack-cli",
+    "install-html-plugin": "npm install --save-dev html-webpack-plugin ",
+    "install-style-loader": "npm install --save-dev style-loader css-loader",
+    "install-images-html": "npm install --save-dev html-loader",
+    "install-wp-serve": "npm install --save-dev webpack-dev-server",
+    "install-wp-merge": "npm install merge --save-dev webpack-merge ",
+    "install-all-wp": "npm install --save-dev webpack webpack-cli html-webpack-plugin style-loader css-loader html-loader webpack-dev-server webpack-merge",
+    "install-eslint": "npm init @eslint/config@latest",
+    "eslint-chck": "npx eslint",
+    "help-eslint": "echo 'Run ESLint with: npm run eslint-check <filename.js>'",
+    "install-prettier": "npm install --save-dev --save-exact prettier",
+    "create-pret-config-file": "node --eval \"require('fs').writeFileSync('.prettierrc','{}\\n')\"",
+    "create-pret-ignore": "node --eval \"require('fs').writeFileSync('.prettierignore','# Ignore artifacts:\\nbuild\\ncoverage\\n')\"",
+    "pret-format-all": "npx prettier . --write ",
+    "pret-remove-conflict": "npm i -D eslint-config-prettier",
+    "install-date-fns": "npm install date-fns --save"
+  }
+}
