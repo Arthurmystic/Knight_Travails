@@ -18,7 +18,8 @@ const KNIGHT_MOVES = [
 const visitedSquares = [];
 const queue = [];
 const finalArr = [];
-const edges = {};
+const finalArr2 = [];
+const edgesMat = {};
 
 // Checks if an array contains an array. Can't use .includes as only checks single items eg a, or 9 etc
 function containsPosition(mainArray, target) {
@@ -42,8 +43,9 @@ function queueMoves(currPosn) {
   for (const move of KNIGHT_MOVES) {
     const newPosn = [currPosn[0] + move[0], currPosn[1] + move[1]];
 
-    if (containsPosition(visitedSquares, newPosn) || isOffBoard(newPosn))
+    if (containsPosition(visitedSquares, newPosn) || isOffBoard(newPosn)) {
       continue; // if position visited or outside board go to next iteration
+    }
     queue.push(newPosn);
     tempStore.push(newPosn);
   }
@@ -53,16 +55,60 @@ function queueMoves(currPosn) {
 function handlePosition(currentPosn) {
   // if (samePosition(currentPosn, targetPosn)) return 0; // just if initial and target posn are same
 
-  if (!containsPosition(visitedSquares, currentPosn))
+  // if (samePosition([5,3],currentPosn)){console.log('KKKKKKKKKKKKKK')}
+  if (!containsPosition(visitedSquares, currentPosn)) {
     visitedSquares.push(currentPosn);
-
+    // if (samePosition([5,3],currentPosn)){console.log('wwwwwwwwwwwwwww')}
+    // currEdges = queueMoves(currentPosn);
+    // const key = currentPosn.toString();
+    // edgesMat[key] = currEdges;
+  }
+  // if (samePosition([5,3],currentPosn)){console.log('wwwwwwwwwwwwwww')}
   currEdges = queueMoves(currentPosn);
-  const key = currentPosn.toString();
-  edges[key] = currEdges;
+  // const key = currentPosn.toString();
+  const key = JSON.stringify(currentPosn);
+  edgesMat[key] = currEdges;
+  // console.log(currEdges)
+  // console.log("(===========================)")
+
+  for (const posn of currEdges) {
+    // console.log('here',posn)
+    if (samePosition(posn, targetPosn)) {
+      finalArr2.push(targetPosn);
+      console.log("here", posn);
+      finalArr2.push(JSON.parse(key));
+      currKey = key;
+      backTrackKeyToStart(currKey);
+      return true;
+    }
+  }
+}
+
+function backTrackKeyToStart(currKey) {
+  const curr_key = JSON.parse(currKey);
+  // console.log('here',curr_key, startPosn)
+  if (samePosition(curr_key, startPosn)) {
+    console.log("here299009", curr_key);
+    return true;
+  }
+  let nextKey;
+  for (let key in edgesMat) {
+    for (let posn of edgesMat[key]) {
+      if (samePosition(curr_key, posn)) {
+        console.log(key);
+        finalArr2.push(JSON.parse(key));
+        nextKey = key;
+        backTrackKeyToStart(nextKey);
+      }
+    }
+  }
 }
 
 handlePosition(startPosn); //initialize queue
 // work on queue
+// console.log('++++++')
+// console.log(edgesMat)
+// console.log('++++++\n')
 
 function handleQueue(currPosn) {
   while (queue.length > 0) {
@@ -72,29 +118,36 @@ function handleQueue(currPosn) {
       break;
     }
     const nextItem = queue.shift(); // removes the item from queue. (1s t in line)
-    handlePosition(nextItem);
+    const res = handlePosition(nextItem);
+    if (res) return;
     currPosn = nextItem;
   }
 }
-// call moves on finalposn. check if move is in visitedsquare, if yes, store that move in finalarray. and andthen do moves on that posn too.
+
 handleQueue(startPosn);
 
 // console.log(visitedSquares)
 
-backTraverse([0, 0]);
+// backTraverse([0, 0]);
 // console.log(visitedSquares)
+
+// console.log('++++++')
+// console.log(edgesMat)
+// console.log('++++++\n')
+// console.log(visitedSquares)
+console.log(finalArr2);
 
 function backTraverse(posn) {
   let nextPos = posn;
   finalArr.push(nextPos);
   let count = 1;
-  console.log(nextPos, startPosn);
-  console.log(samePosition(nextPos, startPosn));
+  // console.log(nextPos, startPosn);
+  // console.log(samePosition(nextPos, startPosn));
   while (!samePosition(nextPos, startPosn)) {
     if (count == 30) {
-      console.log("________");
-      console.log(finalArr);
-      console.log("________");
+      // console.log("________");
+      // console.log(finalArr);
+      // console.log("________");
       return;
     }
     for (const move of KNIGHT_MOVES) {
@@ -114,7 +167,7 @@ function backTraverse(posn) {
   // console.log (finalArr)
   // backTraverse(finalArr.at(-1))
 }
-console.log(finalArr);
+// console.log(finalArr);
 
 // function handleQueue(currPosn) {
 //   if (queue.length <= 0) return;
