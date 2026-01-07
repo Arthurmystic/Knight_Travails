@@ -1,6 +1,6 @@
 // index.js
 
-const targetPosn = [0, 0]; // to be hushed out later
+const targetPosn = [4, 3]; // to be hushed out later
 const startPosn = [3, 3]; // to be hushed out later
 let ITE = 0;
 
@@ -74,14 +74,15 @@ function handlePosition(currentPosn) {
 function backTrackKeyToStart(currKey) {
   const curr_key = JSON.parse(currKey);
   if (isSameSquare(curr_key, startPosn)) {
-    console.log("here299009", curr_key);
+    console.log("herep", curr_key);
     return true;
   }
+  console.log("here2");
   let nextKey;
   for (let key in edgesMat) {
     for (let posn of edgesMat[key]) {
       if (isSameSquare(curr_key, posn)) {
-        console.log(key);
+        // console.log(key);
         finalArr2.push(JSON.parse(key));
         nextKey = key;
         const found = backTrackKeyToStart(nextKey);
@@ -89,13 +90,13 @@ function backTrackKeyToStart(currKey) {
       }
     }
   }
+  return false;
 }
 
 function handleQueue(currPosn) {
   while (queue.length > 0) {
     ITE += 1;
     if (isSameSquare(currPosn, targetPosn)) {
-      console.log("yeeye", currPosn);
       break;
     }
     const nextItem = queue.shift(); // removes the item from queue. (1s t in line)
@@ -106,4 +107,5 @@ function handleQueue(currPosn) {
 }
 handlePosition(startPosn); //initialize queue
 handleQueue(startPosn);
+// finalArr2.push()
 console.log(finalArr2);
