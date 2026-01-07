@@ -1,8 +1,5 @@
 // index.js
 
-const targetPosn = [2, 4]; // to be hushed out later
-const startPosn = [2, 2]; // to be hushed out later
-
 function initKnightState() {
   const KNIGHT_MOVES = [
     [+1, +2],
@@ -30,7 +27,7 @@ function initKnightState() {
 }
 
 const { KNIGHT_MOVES, visitedSquares, queue, finalArr2, edgesMat } =
-  initKnightState(startPosn, targetPosn);
+  initKnightState();
 
 // Checks if an array contains an array. Can't use .includes as only checks single items eg a, or 9 etc
 function containsPosition(mainArray, target) {
@@ -63,11 +60,11 @@ function queueMoves(currPosn) {
   return tempStore;
 }
 
-function handlePosition(currentPosn) {
+function handlePosition(currentPosn, startPosn, targetPosn) {
   if (!containsPosition(visitedSquares, currentPosn)) {
     visitedSquares.push(currentPosn);
   }
-  currEdges = queueMoves(currentPosn);
+  const currEdges = queueMoves(currentPosn);
   const key = JSON.stringify(currentPosn);
   edgesMat[key] = currEdges;
 
@@ -75,20 +72,20 @@ function handlePosition(currentPosn) {
     if (isSameSquare(posn, targetPosn)) {
       finalArr2.push(targetPosn);
       finalArr2.push(JSON.parse(key));
-      backTrackLastToStart(key);
+      backTrackLastToStart(key, startPosn);
       return true;
     }
   }
 }
 
-function backTrackLastToStart(currKey) {
+function backTrackLastToStart(currKey, startPosn) {
   const curr_key = JSON.parse(currKey);
   if (isSameSquare(curr_key, startPosn)) return true;
   for (let key in edgesMat) {
     for (let posn of edgesMat[key]) {
       if (isSameSquare(curr_key, posn)) {
         finalArr2.push(JSON.parse(key));
-        const found = backTrackLastToStart(key);
+        const found = backTrackLastToStart(key, startPosn);
         if (found) return true;
       }
     }
@@ -96,17 +93,29 @@ function backTrackLastToStart(currKey) {
   return false;
 }
 
-function handleQueue(currPosn) {
+function handleQueue(currPosn, startPosn, targetPosn) {
   while (queue.length > 0) {
     if (isSameSquare(currPosn, targetPosn)) {
       break;
     }
     const nextItem = queue.shift(); // removes the item from queue. (1st in line)
-    const targetFound = handlePosition(nextItem);
+    const targetFound = handlePosition(nextItem, startPosn, targetPosn);
     if (targetFound) return;
     currPosn = nextItem;
   }
 }
-handlePosition(startPosn); //initialize queue
-handleQueue(startPosn);
-console.log(finalArr2.reverse());
+// const startPosn= [0,0]
+// const targetPosn =[7,7]
+// handlePosition(startPosn); //initialize queue
+//   handleQueue(startPosn,targetPosn);
+//   console.log(finalArr2.reverse());
+
+function knightMoves(startPos, targetPos) {
+  const startPosn = [0, 0];
+  const targetPosn = [7, 7];
+  handlePosition(startPosn, startPosn, targetPosn); //initialize queue
+  handleQueue(startPosn, startPosn, targetPosn);
+  console.log(finalArr2.reverse());
+}
+
+knightMoves([0, 0], [7, 7]);
