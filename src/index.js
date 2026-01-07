@@ -3,45 +3,21 @@
 const targetPosn = [2, 4]; // to be hushed out later
 const startPosn = [2, 2]; // to be hushed out later
 
-function initKnightState(startPosn, targetPosn) {
-  const KNIGHT_MOVES = [
-    [+1, +2],
-    [+1, -2],
-    [-1, +2],
-    [-1, -2],
-    [+2, +1],
-    [+2, -1],
-    [-2, +1],
-    [-2, -1],
-  ];
+const KNIGHT_MOVES = [
+  [+1, +2],
+  [+1, -2],
+  [-1, +2],
+  [-1, -2],
+  [+2, +1],
+  [+2, -1],
+  [-2, +1],
+  [-2, -1],
+];
 
-  const visitedSquares = [];
-  const queue = [];
-  const finalArr2 = [];
-  const edgesMat = {};
-  return {
-    startPosn,
-    targetPosn,
-    KNIGHT_MOVES,
-    visitedSquares,
-    queue,
-    finalArr2,
-    edgesMat,
-  };
-  //   handlePosition(startPosn, edgesMat, finalArr2, visitedSquares, KNIGHT_MOVES); //initialize queue
-  //   handleQueue(startPosn, targetPosn);
-  //   console.log(finalArr2.reverse());
-}
-
-const {
-  //   startPosn,
-  //   targetPosn,
-  KNIGHT_MOVES,
-  visitedSquares,
-  queue,
-  finalArr2,
-  edgesMat,
-} = initKnightState([7, 7], [0, 0]);
+const visitedSquares = [];
+const queue = [];
+const finalArr2 = [];
+const edgesMat = {};
 
 // Checks if an array contains an array. Can't use .includes as only checks single items eg a, or 9 etc
 function containsPosition(mainArray, target) {
@@ -107,7 +83,7 @@ function backTrackLastToStart(currKey) {
   return false;
 }
 
-function handleQueue(currPosn, targetPosn) {
+function handleQueue(currPosn) {
   while (queue.length > 0) {
     if (isSameSquare(currPosn, targetPosn)) {
       break;
@@ -118,5 +94,6 @@ function handleQueue(currPosn, targetPosn) {
     currPosn = nextItem;
   }
 }
-
-knightMoves(startPosn, targetPosn);
+handlePosition(startPosn); //initialize queue
+handleQueue(startPosn);
+console.log(finalArr2.reverse());
