@@ -3,21 +3,34 @@
 const targetPosn = [2, 4]; // to be hushed out later
 const startPosn = [2, 2]; // to be hushed out later
 
-const KNIGHT_MOVES = [
-  [+1, +2],
-  [+1, -2],
-  [-1, +2],
-  [-1, -2],
-  [+2, +1],
-  [+2, -1],
-  [-2, +1],
-  [-2, -1],
-];
+function initKnightState() {
+  const KNIGHT_MOVES = [
+    [+1, +2],
+    [+1, -2],
+    [-1, +2],
+    [-1, -2],
+    [+2, +1],
+    [+2, -1],
+    [-2, +1],
+    [-2, -1],
+  ];
 
-const visitedSquares = [];
-const queue = [];
-const finalArr2 = [];
-const edgesMat = {};
+  const visitedSquares = [];
+  const queue = [];
+  const finalArr2 = [];
+  const edgesMat = {};
+
+  return {
+    KNIGHT_MOVES,
+    visitedSquares,
+    queue,
+    finalArr2,
+    edgesMat,
+  };
+}
+
+const { KNIGHT_MOVES, visitedSquares, queue, finalArr2, edgesMat } =
+  initKnightState(startPosn, targetPosn);
 
 // Checks if an array contains an array. Can't use .includes as only checks single items eg a, or 9 etc
 function containsPosition(mainArray, target) {
