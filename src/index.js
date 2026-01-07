@@ -1,25 +1,47 @@
 // index.js
 
-const targetPosn = [4, 3]; // to be hushed out later
-const startPosn = [3, 3]; // to be hushed out later
-let ITE = 0;
+const targetPosn = [2, 4]; // to be hushed out later
+const startPosn = [2, 2]; // to be hushed out later
 
-const KNIGHT_MOVES = [
-  [+1, +2],
-  [+1, -2],
-  [-1, +2],
-  [-1, -2],
-  [+2, +1],
-  [+2, -1],
-  [-2, +1],
-  [-2, -1],
-];
+function initKnightState(startPosn, targetPosn) {
+  const KNIGHT_MOVES = [
+    [+1, +2],
+    [+1, -2],
+    [-1, +2],
+    [-1, -2],
+    [+2, +1],
+    [+2, -1],
+    [-2, +1],
+    [-2, -1],
+  ];
 
-const visitedSquares = [];
-const queue = [];
-const finalArr = [];
-const finalArr2 = [];
-const edgesMat = {};
+  const visitedSquares = [];
+  const queue = [];
+  const finalArr2 = [];
+  const edgesMat = {};
+  return {
+    startPosn,
+    targetPosn,
+    KNIGHT_MOVES,
+    visitedSquares,
+    queue,
+    finalArr2,
+    edgesMat,
+  };
+  //   handlePosition(startPosn, edgesMat, finalArr2, visitedSquares, KNIGHT_MOVES); //initialize queue
+  //   handleQueue(startPosn, targetPosn);
+  //   console.log(finalArr2.reverse());
+}
+
+const {
+  //   startPosn,
+  //   targetPosn,
+  KNIGHT_MOVES,
+  visitedSquares,
+  queue,
+  finalArr2,
+  edgesMat,
+} = initKnightState([7, 7], [0, 0]);
 
 // Checks if an array contains an array. Can't use .includes as only checks single items eg a, or 9 etc
 function containsPosition(mainArray, target) {
@@ -64,28 +86,20 @@ function handlePosition(currentPosn) {
     if (isSameSquare(posn, targetPosn)) {
       finalArr2.push(targetPosn);
       finalArr2.push(JSON.parse(key));
-      currKey = key;
-      backTrackKeyToStart(currKey);
+      backTrackLastToStart(key);
       return true;
     }
   }
 }
 
-function backTrackKeyToStart(currKey) {
+function backTrackLastToStart(currKey) {
   const curr_key = JSON.parse(currKey);
-  if (isSameSquare(curr_key, startPosn)) {
-    console.log("herep", curr_key);
-    return true;
-  }
-  console.log("here2");
-  let nextKey;
+  if (isSameSquare(curr_key, startPosn)) return true;
   for (let key in edgesMat) {
     for (let posn of edgesMat[key]) {
       if (isSameSquare(curr_key, posn)) {
-        // console.log(key);
         finalArr2.push(JSON.parse(key));
-        nextKey = key;
-        const found = backTrackKeyToStart(nextKey);
+        const found = backTrackLastToStart(key);
         if (found) return true;
       }
     }
@@ -93,19 +107,16 @@ function backTrackKeyToStart(currKey) {
   return false;
 }
 
-function handleQueue(currPosn) {
+function handleQueue(currPosn, targetPosn) {
   while (queue.length > 0) {
-    ITE += 1;
     if (isSameSquare(currPosn, targetPosn)) {
       break;
     }
-    const nextItem = queue.shift(); // removes the item from queue. (1s t in line)
-    const res = handlePosition(nextItem);
-    if (res) return;
+    const nextItem = queue.shift(); // removes the item from queue. (1st in line)
+    const targetFound = handlePosition(nextItem);
+    if (targetFound) return;
     currPosn = nextItem;
   }
 }
-handlePosition(startPosn); //initialize queue
-handleQueue(startPosn);
-// finalArr2.push()
-console.log(finalArr2);
+
+knightMoves(startPosn, targetPosn);
