@@ -84,7 +84,8 @@ function backTrackKeyToStart(currKey) {
         console.log(key);
         finalArr2.push(JSON.parse(key));
         nextKey = key;
-        backTrackKeyToStart(nextKey);
+        const found = backTrackKeyToStart(nextKey);
+        if (found) return true;
       }
     }
   }
