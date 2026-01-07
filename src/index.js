@@ -14,19 +14,19 @@ function initKnightState() {
 
   const visitedSquares = [];
   const queue = [];
-  const finalArr2 = [];
-  const edgesMat = {};
+  const solutionPath = [];
+  const adjacencyList = {};
 
   return {
     KNIGHT_MOVES,
     visitedSquares,
     queue,
-    finalArr2,
-    edgesMat,
+    solutionPath,
+    adjacencyList,
   };
 }
 
-const { KNIGHT_MOVES, visitedSquares, queue, finalArr2, edgesMat } =
+const { KNIGHT_MOVES, visitedSquares, queue, solutionPath, adjacencyList } =
   initKnightState();
 
 // Checks if an array contains an array. Can't use .includes as only checks single items eg a, or 9 etc
@@ -46,7 +46,7 @@ const isSameSquare = (array_1, array_2) =>
   array_1.length === array_2.length &&
   array_1.every((val, idx) => val === array_2[idx]);
 
-function queueMoves(currPosn) {
+function enqueueMoves(currPosn) {
   const tempStore = [];
   for (const move of KNIGHT_MOVES) {
     const newPosn = [currPosn[0] + move[0], currPosn[1] + move[1]];
@@ -60,18 +60,18 @@ function queueMoves(currPosn) {
   return tempStore;
 }
 
-function handlePosition(currentPosn, startPosn, targetPosn) {
+function processSquare(currentPosn, startPosn, targetPosn) {
   if (!containsPosition(visitedSquares, currentPosn)) {
     visitedSquares.push(currentPosn);
   }
-  const currEdges = queueMoves(currentPosn);
+  const currEdges = enqueueMoves(currentPosn);
   const key = JSON.stringify(currentPosn);
-  edgesMat[key] = currEdges;
+  adjacencyList[key] = currEdges;
 
   for (const posn of currEdges) {
     if (isSameSquare(posn, targetPosn)) {
-      finalArr2.push(targetPosn);
-      finalArr2.push(JSON.parse(key));
+      solutionPath.push(targetPosn);
+      solutionPath.push(JSON.parse(key));
       backTrackLastToStart(key, startPosn);
       return true;
     }
@@ -81,10 +81,10 @@ function handlePosition(currentPosn, startPosn, targetPosn) {
 function backTrackLastToStart(currKey, startPosn) {
   const curr_key = JSON.parse(currKey);
   if (isSameSquare(curr_key, startPosn)) return true;
-  for (let key in edgesMat) {
-    for (let posn of edgesMat[key]) {
+  for (let key in adjacencyList) {
+    for (let posn of adjacencyList[key]) {
       if (isSameSquare(curr_key, posn)) {
-        finalArr2.push(JSON.parse(key));
+        solutionPath.push(JSON.parse(key));
         const found = backTrackLastToStart(key, startPosn);
         if (found) return true;
       }
@@ -93,29 +93,22 @@ function backTrackLastToStart(currKey, startPosn) {
   return false;
 }
 
-function handleQueue(currPosn, startPosn, targetPosn) {
+function runBFSToProcessQueue(currPosn, startPosn, targetPosn) {
   while (queue.length > 0) {
     if (isSameSquare(currPosn, targetPosn)) {
       break;
     }
     const nextItem = queue.shift(); // removes the item from queue. (1st in line)
-    const targetFound = handlePosition(nextItem, startPosn, targetPosn);
+    const targetFound = processSquare(nextItem, startPosn, targetPosn);
     if (targetFound) return;
     currPosn = nextItem;
   }
 }
-// const startPosn= [0,0]
-// const targetPosn =[7,7]
-// handlePosition(startPosn); //initialize queue
-//   handleQueue(startPosn,targetPosn);
-//   console.log(finalArr2.reverse());
 
-function knightMoves(startPos, targetPos) {
-  const startPosn = [0, 0];
-  const targetPosn = [7, 7];
-  handlePosition(startPosn, startPosn, targetPosn); //initialize queue
-  handleQueue(startPosn, startPosn, targetPosn);
-  console.log(finalArr2.reverse());
+function findKnightPath(startPosn, targetPosn) {
+  processSquare(startPosn, startPosn, targetPosn); //initialize queue
+  runBFSToProcessQueue(startPosn, startPosn, targetPosn);
+  console.log(solutionPath.reverse());
 }
 
-knightMoves([0, 0], [7, 7]);
+findKnightPath([0, 0], [7, 7]);
