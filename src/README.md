@@ -53,6 +53,7 @@ A JavaScript implementation to find the **shortest sequence of moves** a knight 
 ```javascript
 // Find the shortest path from [0, 0] to [7, 7]
 findKnightPath([0, 0], [7, 7]);
+```
 
 ## Future Improvements
 
@@ -60,4 +61,4 @@ Child → Parent Mapping: Currently, the adjacency list maps parent → children
 This requires iterating through the entire list to backtrack, costing O(N²) in the worst case.
 A more efficient approach is to store child → parent during BFS.
 This allows direct backtracking in O(n) time:
-```
+
