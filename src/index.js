@@ -130,6 +130,10 @@ function runBFSToProcessQueue(currPosn, startPosn, targetPosn) {
 }
 
 function findKnightPath(startPosn, targetPosn) {
+  if (isOffBoard(startPosn) || isOffBoard(targetPosn)) {
+    console.log("Invalid position: coordinates must be between 0 and 7.");
+    return;
+  }
   if (isSameSquare(startPosn, targetPosn)) {
     console.log("Path found in 0 moves:");
     console.log([startPosn]);
