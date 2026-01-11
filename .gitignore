@@ -1,1 +1,7 @@
-node_modules
+# ignore everything including node_modules
+*
+
+# but EXCEPT these
+!.gitignore
+!src/
+!src/**
